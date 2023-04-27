@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@wazo/sdk@0.39.0-beta.15":
-  version "0.39.0-beta.15"
-  resolved "https://registry.yarnpkg.com/@wazo/sdk/-/sdk-0.39.0-beta.15.tgz#2c403a8515496e671cdc17a735296a586dd160e4"
-  integrity sha512-88tW6/fovhQU0hYfpMq8+rYRHlP38NPylK1tZYLd5a8X39x3yv2MHCUrrHPCpI6Pv+AvA6cf3VoGsRlvHPZT7A==
+"@wazo/sdk@0.39.0-beta.16":
+  version "0.39.0-beta.16"
+  resolved "https://registry.yarnpkg.com/@wazo/sdk/-/sdk-0.39.0-beta.16.tgz#6ea82af6df4705caf2437e4ff341f9ca7cb242e0"
+  integrity sha512-T2OJo+SHyga1UKejtYkI68N25cWCGdoFGkaMXh2Dl1KaHBRHcG7aZWUxfBOrCHF/9uLUgLCHN/0W31t2JCECDQ==
   dependencies:
     events "^3.3.0"
     fstream "^1.0.12"
@@ -59,7 +59,7 @@ fstream@^1.0.12:
     mkdirp ">=0.5 0"
     rimraf "2"
 
-getstats@manuquentin/getStats#fix_stats_mobile:
+"getstats@github:manuquentin/getStats#fix_stats_mobile":
   version "1.2.0"
   resolved "https://codeload.github.com/manuquentin/getStats/tar.gz/664ad959bad42ca794b12dcee3f936e9eac0d88d"
 
