@@ -9,7 +9,7 @@ const { Wazo } = SDK;
 const server = process.env.SERVER;
 const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
-const sessionDuration = +process.env.SESSION_DURATION || 10;
+const sessionDuration = typeof process.env.SESSION_DURATION !== 'undefined' ? process.env.SESSION_DURATION : 10;
 const debug = +process.env.DEBUG === 1;
 const t = new Date();
 
