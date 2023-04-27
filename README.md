@@ -13,6 +13,6 @@ Run the script
 
 ```sh
 docker build . -t wda-load-testing
-docker run --rm --name sms -e SERVER=xxx -e LOGIN=xxx -e PASSWORD=xxx [-e DEBUG=1] [-e SESSION_DURATION=10] -t wda-load-testing
+docker run --rm --name wda -e SERVER=xxx -e LOGIN=xxx -e PASSWORD=xxx [-e DEBUG=1] [-e SESSION_DURATION=10] -t wda-load-testing
 ```
 
