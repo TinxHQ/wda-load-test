@@ -60,11 +60,13 @@ log('Started');
     log('Rooms fetched', new Date() - t);
 
     // Fetch recent contact with statuses
-    const favorites = await Wazo.getApiClient().dird.listFavorites(session.primaryContext());
-    const callLogs = await Wazo.getApiClient().callLogd.listCallLogs(0, 100);
-    const voicemails = await Wazo.getApiClient().calld.listVoicemails();
-    const rooms = await Wazo.getApiClient().chatd.getUserRooms();
-    const messages = await Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' });
+    const [favorites, callLogs, voicemails, rooms, messages] = await Promise.all([
+      Wazo.getApiClient().dird.listFavorites(session.primaryContext()),
+      Wazo.getApiClient().callLogd.listCallLogs(0, 100),
+      Wazo.getApiClient().calld.listVoicemails(),
+      Wazo.getApiClient().chatd.getUserRooms(),
+      Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' }),
+    ]);
 
     log('Activities fetched', new Date() - t);
 
