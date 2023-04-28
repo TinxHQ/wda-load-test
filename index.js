@@ -63,7 +63,7 @@ log('Started');
     const [favorites, callLogs, voicemails, rooms, messages] = await Promise.all([
       Wazo.getApiClient().dird.listFavorites(session.primaryContext()),
       Wazo.getApiClient().callLogd.listCallLogs(0, 100),
-      Wazo.getApiClient().calld.listVoicemails(),
+      Wazo.getApiClient().calld.listVoicemails().catch(() => ([])),
       Wazo.getApiClient().chatd.getUserRooms(),
       Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' }),
     ]);
