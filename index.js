@@ -1,5 +1,10 @@
 import SDK from '@wazo/sdk/dist/wazo-sdk';
 import ws from 'ws';
+import https from 'https';
+
+const agent = new https.Agent({
+  rejectUnauthorized: false
+});
 
 global.window = global;
 global.WebSocket = ws;
@@ -16,6 +21,8 @@ const t = new Date();
 Wazo.Auth.init('wda-load-test', 60);
 Wazo.Auth.setHost(server);
 
+Wazo.api.client.agent = agent;
+
 const log = (message) => {
   if (!debug) {
     return;
@@ -24,9 +31,7 @@ const log = (message) => {
   console.log(`[+${new Date() - t}]`, message);
 }
 
-
 log('Started');
-
 
 (async () => {
   try {
