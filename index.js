@@ -16,9 +16,12 @@ const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
 const sessionDuration = typeof process.env.SESSION_DURATION !== 'undefined' ? process.env.SESSION_DURATION : 10;
 const debug = +process.env.DEBUG === 1;
+const tokenExpiration = +process.env.TOKEN_EXPIRATION || 300;
 const t = new Date();
 
-Wazo.Auth.init('wda-load-test', 60);
+console.log('tokenExpiration', tokenExpiration);
+
+Wazo.Auth.init('wda-load-test', tokenExpiration);
 Wazo.Auth.setHost(server);
 
 Wazo.api.client.agent = agent;
