@@ -113,6 +113,10 @@ log('Started');
 
     log(`Waiting ${sessionDuration}s ...`);
 
+    Wazo.Websocket.ws.socket.onmessage = msg => {
+      log(`WS message: ${JSON.stringify(msg)}`);
+    };
+
     // Wait some time
     await new Promise(resolve => setTimeout(resolve, sessionDuration * 1000));
 
@@ -124,7 +128,7 @@ log('Started');
     log('Logged out');
     process.exit(0);
   } catch (e) {
-    console.log('error', e);
+    console.error('error', e);
     process.exit(1);
   }
 })();
