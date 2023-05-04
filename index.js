@@ -113,8 +113,10 @@ log('Started');
 
     log(`Waiting ${sessionDuration}s ...`);
 
-    Wazo.Websocket.ws.socket.onmessage = msg => {
-      log(`WS message: ${JSON.stringify(msg)}`);
+    Wazo.Websocket.ws.socket.onmessage = event => {
+      const message = JSON.parse(typeof event.data === 'string' ? event.data : '{}');
+
+      log(`WS message: ${JSON.stringify(message)}`);
     };
 
     // Wait some time
