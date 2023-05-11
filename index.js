@@ -16,6 +16,7 @@ const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
 const sessionDuration = typeof process.env.SESSION_DURATION !== 'undefined' ? process.env.SESSION_DURATION : 10;
 const debug = +process.env.DEBUG === 1;
+const disableChatd = +process.env.DISABLE_CHATD === 1;
 const tokenExpiration = +process.env.TOKEN_EXPIRATION || 300;
 const t = new Date();
 
@@ -59,8 +60,10 @@ log('Started');
     log('Dird sources fetched', new Date() - t);
 
     // Fetch user info
-    await Wazo.getApiClient().chatd.getContactStatusInfo(session.uuid);
-    log('User info fetched', new Date() - t);
+    if (!disableChatd) {
+      await Wazo.getApiClient().chatd.getContactStatusInfo(session.uuid);
+      log('User info fetched', new Date() - t);
+    }
 
     // Fetch all rooms
     const roomSource = await Wazo.getApiClient().dird.fetchConferenceSource(session.primaryContext());
@@ -68,13 +71,18 @@ log('Started');
     log('Rooms fetched', new Date() - t);
 
     // Fetch recent contact with statuses
-    const [favorites, callLogs, voicemails, rooms, messages] = await Promise.all([
+    const promises = [
       Wazo.getApiClient().dird.listFavorites(session.primaryContext()),
       Wazo.getApiClient().callLogd.listCallLogs(0, 100),
       Wazo.getApiClient().calld.listVoicemails().catch(() => ([])),
-      Wazo.getApiClient().chatd.getUserRooms(),
-      Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' }),
-    ]);
+    ];
+
+    if (!disableChatd) {
+      promises.push(Wazo.getApiClient().chatd.getUserRooms());
+      promises.push( Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' }));
+    }
+
+    const [favorites, callLogs, voicemails, rooms, messages] = await Promise.all(promises);
 
     log('Activities fetched', new Date() - t);
 
@@ -94,8 +102,10 @@ log('Started');
     log('Contacts fetched', new Date() - t);
 
     // Fetch statuses
-    await Wazo.getApiClient().chatd.getMultipleLineState(contactUuids);
-    log('Contacts statuses fetched', new Date() - t);
+    if (!disableChatd) {
+      await Wazo.getApiClient().chatd.getMultipleLineState(contactUuids);
+      log('Contacts statuses fetched', new Date() - t);
+    }
 
     // Switchboards
     const switchboardUuids = session.profile.switchboards.map(switchboard => switchboard.uuid);
