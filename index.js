@@ -20,8 +20,6 @@ const disableChatd = +process.env.DISABLE_CHATD === 1;
 const tokenExpiration = +process.env.TOKEN_EXPIRATION || 300;
 const t = new Date();
 
-console.log('tokenExpiration', tokenExpiration);
-
 Wazo.Auth.init('wda-load-test', tokenExpiration);
 Wazo.Auth.setHost(server);
 
@@ -82,7 +80,17 @@ log('Started');
       promises.push( Wazo.getApiClient().chatd.getMessages({ distinct: 'room_uuid', order: 'created_at', limit: 30, direction: 'desc' }));
     }
 
-    const [favorites, callLogs, voicemails, rooms, messages] = await Promise.all(promises);
+    let favorites = [];
+    let callLogs = [];
+    let rooms = [];
+    let voicemails = [];
+    let messages = [];
+
+    if (disableChatd) {
+      [favorites, callLogs, voicemails] = await Promise.all(promises);
+    } else {
+      [favorites, callLogs, voicemails, rooms, messages] = await Promise.all(promises);
+    }
 
     log('Activities fetched', new Date() - t);
 
