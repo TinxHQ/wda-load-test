@@ -11,7 +11,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@wazo/sdk": "0.39.0-beta.16",
+    "@wazo/sdk": "0.39.0-beta.20",
     "ws": "^8.13.0"
   }
 }

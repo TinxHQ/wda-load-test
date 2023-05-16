@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@wazo/sdk@0.39.0-beta.16":
-  version "0.39.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@wazo/sdk/-/sdk-0.39.0-beta.16.tgz#6ea82af6df4705caf2437e4ff341f9ca7cb242e0"
-  integrity sha512-T2OJo+SHyga1UKejtYkI68N25cWCGdoFGkaMXh2Dl1KaHBRHcG7aZWUxfBOrCHF/9uLUgLCHN/0W31t2JCECDQ==
+"@wazo/sdk@0.39.0-beta.20":
+  version "0.39.0-beta.20"
+  resolved "https://registry.yarnpkg.com/@wazo/sdk/-/sdk-0.39.0-beta.20.tgz#97ca054472bdb8f525df4d3047a01e8be6aaca73"
+  integrity sha512-uDAUtZCzf1nTWgUYseHRgEGRNxISCq+8Pva+VduxkU96EjKZIY5iZz8rX2wLXda1Bz3uhwono5oo1tDB+W737Q==
   dependencies:
     events "^3.3.0"
     fstream "^1.0.12"
@@ -15,6 +15,7 @@
     json-to-graphql-query "^2.0.0"
     jsrsasign "^10.2.0"
     moment "^2.29.1"
+    node-abort-controller "^3.1.1"
     node-fetch "^2.6.1"
     reconnecting-websocket "^4.4.0"
     sdp-transform "^2.14.1"
@@ -136,6 +137,11 @@ moment@^2.29.1:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
+node-abort-controller@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.1.1.tgz#a94377e964a9a37ac3976d848cb5c765833b8548"
+  integrity sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==
 
 node-fetch@^2.6.1:
   version "2.6.9"
