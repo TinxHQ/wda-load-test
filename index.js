@@ -1,5 +1,6 @@
 import SDK from '@wazo/sdk/dist/wazo-sdk';
 import ws from 'ws';
+import fs from 'fs';
 import https from 'https';
 
 const agent = new https.Agent({
@@ -9,7 +10,9 @@ const agent = new https.Agent({
 global.window = global;
 global.WebSocket = ws;
 
-const { Wazo } = SDK;
+const { Wazo, IssueReporter } = SDK;
+
+
 
 const server = process.env.SERVER;
 const login = process.env.LOGIN;
@@ -19,12 +22,42 @@ const debug = +process.env.DEBUG === 1;
 const disableChatd = +process.env.DISABLE_CHATD === 1;
 const tokenExpiration = +process.env.TOKEN_EXPIRATION || 300;
 const disableHeaderCheck = +process.env.DISABLE_HEADER_CHECK === 1;
+const logRequests = +process.env.LOG_REQUESTS === 1;
 const requestTimeout = +process.env.REQUEST_TIMEOUT || 300 * 1000;
 const t = new Date();
+const loadId = Math.ceil(Math.random() * 10000);
+let logger = console;
+if (+process.env.DOCKER) {
+  const output = fs.createWriteStream('/debug.log');
+  logger = new console.Console({ stdout: output, stderr: output });
+}
 
 Wazo.Auth.init('wda-load-test', tokenExpiration);
 Wazo.Auth.setHost(server);
 Wazo.Auth.setRequestTimeout(requestTimeout);
+
+const fetchOptions = {
+  headers: {
+    'X-Load-Id': loadId,
+  }
+};
+
+global.wazoFetchOptions[null] = fetchOptions;
+Wazo.api.client.setFetchOptions({ ...Wazo.api.client.fetchOptions, fetchOptions });
+
+if (logRequests) {
+  IssueReporter.enabled = true;
+
+  IssueReporter.log = (level, ...args) => {
+    if (args[0] === 'logger-category=http') {
+      const url = args[1];
+      const options = args[2];
+      logger.log(`[${options.method.toUpperCase()}] ${url} ${JSON.stringify(options.headers)} - ${options.status}`);
+    }
+  };
+}
+
+logger.log(`Started with id ${loadId}`)
 
 if (disableHeaderCheck) {
   Wazo.Auth.shouldCheckUserUuidHeader = false;
@@ -37,7 +70,7 @@ const log = (message) => {
     return;
   }
 
-  console.log(`[+${new Date() - t}]`, message);
+  logger.log(`[+${new Date() - t}]`, message);
 }
 
 log('Started');
@@ -158,7 +191,7 @@ log('Started');
     log('Logged out');
     process.exit(0);
   } catch (e) {
-    console.error('error', e);
+    logger.error('error', e);
     process.exit(1);
   }
 })();
