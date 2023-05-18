@@ -12,8 +12,6 @@ global.WebSocket = ws;
 
 const { Wazo, IssueReporter } = SDK;
 
-
-
 const server = process.env.SERVER;
 const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
@@ -27,7 +25,7 @@ const requestTimeout = +process.env.REQUEST_TIMEOUT || 300 * 1000;
 const t = new Date();
 const loadId = Math.ceil(Math.random() * 10000);
 let logger = console;
-if (+process.env.DOCKER) {
+if (+process.env.DOCKER === 1) {
   const output = fs.createWriteStream('/debug.log');
   logger = new console.Console({ stdout: output, stderr: output });
 }
