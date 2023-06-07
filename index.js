@@ -142,6 +142,9 @@ log('Started');
       favorites.map(favorite => favorite.uuid),
     ).filter(uuid => !!uuid);
 
+    // Request own contact status
+    contactUuids.push(session.uuid);
+
     // Fetch recent contacts
     await Wazo.getApiClient().dird.fetchWazoContacts(sources[0].items[0], { uuid: [...new Set(contactUuids)].join(',') });
 
